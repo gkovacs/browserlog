@@ -498,16 +498,17 @@ export split_list_by_length = (list, len) ->
 export send_history_now = ->
   console.log 'sending history now'
   chrome_history_pages <- get_chrome_history_pages()
-  <- log_hist {evt: 'history_pages', data: chrome_history_pages}
+  history_id = Date.now()
+  <- log_hist {evt: 'history_pages', hid: history_id, data: chrome_history_pages}
   url_list_full = history_pages_to_url_list(chrome_history_pages)
   url_list_split = split_list_by_length(url_list_full, 100)
   num_parts = url_list_split.length
   <- async.forEachOf url_list_split, (url_list, idx, donecb) ->
     console.log idx
     get_chrome_history_visits url_list, (url_to_visits) ->
-      log_hist {evt: 'history_visits', idx, totalparts: num_parts, data: url_to_visits}, donecb
+      log_hist {evt: 'history_visits', idx, totalparts: num_parts, hid: history_id, data: url_to_visits}, donecb
   console.log 'done sending history'
-  localStorage.setItem 'time_history_sent', Date.now()
+  localStorage.setItem 'time_history_sent', history_id
 
 export send_history_if_needed = ->
   if Date.now() > time_history_sent + 24*3600*1000 # a day since last history sent

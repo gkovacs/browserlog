@@ -664,8 +664,11 @@
   out$.send_history_now = send_history_now = function(){
     console.log('sending history now');
     return get_chrome_history_pages(function(chrome_history_pages){
+      var history_id;
+      history_id = Date.now();
       return log_hist({
         evt: 'history_pages',
+        hid: history_id,
         data: chrome_history_pages
       }, function(){
         var url_list_full, url_list_split, num_parts;
@@ -679,12 +682,13 @@
               evt: 'history_visits',
               idx: idx,
               totalparts: num_parts,
+              hid: history_id,
               data: url_to_visits
             }, donecb);
           });
         }, function(){
           console.log('done sending history');
-          return localStorage.setItem('time_history_sent', Date.now());
+          return localStorage.setItem('time_history_sent', history_id);
         });
       });
     });
