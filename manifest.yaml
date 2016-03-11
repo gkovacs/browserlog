@@ -1,8 +1,8 @@
 manifest_version: 2
-name: TMI
-short_name: tmi
+name: BrowserLog
+short_name: browserlog
 description: Gain insights about your browsing activity and participate in scientific research
-version: '1.0.8'
+version: '1.0.9'
 permissions:
   - tabs
   - webNavigation
@@ -17,6 +17,7 @@ background:
     - bower_components/jquery/dist/jquery.min.js
     - bower_components/async/dist/async.min.js
     - bower_components/js-yaml/dist/js-yaml.min.js
+    - bower_components/randstr/randstr.js
     - prelude.js
     - minimongo.js
     - memoize.js
@@ -56,5 +57,5 @@ externally_connectable:
     - '*://autosurvey.herokuapp.com/*'
     - '*://tmisurvey.herokuapp.com/*'
     - '*://tmi.stanford.edu/*'
-key: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAxD4UtAX7JkCi1B3FsfHs9tHqT4ODgZ7RSBA60DmK5gK5HRsD0/Ls3LQJ7vs1xntVTIrVgVn1HGBM8d/ZBF1H7Vtm47mkh3K2ZhylD2S9aeKb9XfUji9tokCQDQy2MmgKWWZpSzSbs+OpWCLNcSEHAQLsKPYISoMSUVfOcYVpH+E3K00JbWuh81T8ZCmdEviLtA7EtTFtYcTuYx+L/6mBlGXZFd0cJLOUKKhSgqm9Dd3ZQWOSe6coT9YRni0UUmWSsKSgLNl000Fcq3WRGlGbimMpSORw8sYwFp2vVJkIy2QBImeinUNqKnWkdaX0fBWqJYUR2L4suCN5hSZtbQTqXwIDAQAB
+#key: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAxD4UtAX7JkCi1B3FsfHs9tHqT4ODgZ7RSBA60DmK5gK5HRsD0/Ls3LQJ7vs1xntVTIrVgVn1HGBM8d/ZBF1H7Vtm47mkh3K2ZhylD2S9aeKb9XfUji9tokCQDQy2MmgKWWZpSzSbs+OpWCLNcSEHAQLsKPYISoMSUVfOcYVpH+E3K00JbWuh81T8ZCmdEviLtA7EtTFtYcTuYx+L/6mBlGXZFd0cJLOUKKhSgqm9Dd3ZQWOSe6coT9YRni0UUmWSsKSgLNl000Fcq3WRGlGbimMpSORw8sYwFp2vVJkIy2QBImeinUNqKnWkdaX0fBWqJYUR2L4suCN5hSZtbQTqXwIDAQAB
 
