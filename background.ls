@@ -113,6 +113,9 @@ message_handlers = {
     {location} = data
     load_experiment_for_location location, ->
       callback()
+  'send_stored_events': (data, callback) ->
+    log_mdata data
+    callback()
 }
 
 ext_message_handlers = {
@@ -144,21 +147,6 @@ confirm_permissions = (info, callback) ->
       output.description = field_info[x].description
     field_info_list.push output
   sendTab 'confirm_permissions', {pagename, fields: field_info_list}, callback
-
-send_pageupdate_to_tab = (tabId) ->
-  chrome.tabs.sendMessage tabId, {event: 'pageupdate'}
-
-onWebNav = (tab) ->
-  if tab.frameId == 0 # top-level frame
-    {tabId} = tab
-    possible_experiments <- list_available_experiments_for_location(tab.url)
-    #if possible_experiments.length > 0
-    #  chrome.pageAction.show(tabId)
-    console.log 'pageupdate sent to tab'
-    send_pageupdate_to_tab(tabId)
-
-chrome.webNavigation.onCommitted.addListener onWebNav
-chrome.webNavigation.onHistoryStateUpdated.addListener onWebNav
 
 /*
 chrome.tabs.onUpdated.addListener (tabId, changeInfo, tab) ->
@@ -335,6 +323,7 @@ if not post_data_url?
   post_data_url = 'https://tmi.stanford.edu:3000'
   #post_data_url = 'http://localhost:3001'
 post_log_url = post_data_url + '/addlog'
+post_mlog_url = post_data_url + '/addmlog'
 post_hist_url = post_data_url + '/addhist'
 
 post_hist = (data, callback) ->
@@ -358,22 +347,37 @@ post_data = (data) ->
     data: JSON.stringify(data)
   }
 
+post_mdata = (data) ->
+  # some post request occurs here
+  $.ajax {
+    type: 'POST'
+    url: post_mlog_url
+    contentType: 'text/plain'
+    data: JSON.stringify(data)
+  }
+
 username = localStorage.getItem('username')
 if not username?
   username = randstr(10)
   localStorage.setItem('username', username)
 
-log_hist = (data, callback) ->
+log_hist = (data, callback) !->
   data.time = Date.now()
   data.user = username
   data.ver = '1'
   post_hist(make_safe_for_mongodb(data), callback)
 
-log_data = (data) ->
+log_data = (data) !->
   data.time = Date.now()
   data.user = username
   data.ver = '1'
   post_data(make_safe_for_mongodb(data))
+
+log_mdata = (data) !->
+  data.time = Date.now()
+  data.user = username
+  data.ver = '1'
+  post_mdata(make_safe_for_mongodb(data))
 
 chrome.tabs.onZoomChange.addListener (zoomchangeinfo) ->
   send_window_info_with_data {evt: 'tab_zoomchange', zoomchangeinfo}
@@ -431,10 +435,22 @@ setInterval ->
 , 15000
 
 last_sent_window_info = 0
+#windowsid = 0
+#prev_compressed_windows = ''
 send_window_info_with_data = (data) ->
   last_sent_window_info := Date.now()
   chrome.windows.getAll {populate: true}, (windows) ->
-    data.windows = windows
+    curwindows = LZString.compressToBase64(JSON.stringify(windows))
+    data.windows = curwindows
+    /*
+    if curwindows == prev_compressed_windows
+      data.windowsid = windowsid
+    else
+      data.windows = curwindows
+      windowsid := windowsid + 1
+      data.windowsid = windowsid
+      prev_compressed_windows := curwindows
+    */
     log_data data
 
 browser_focus_changed = (new_focused) ->
@@ -499,14 +515,14 @@ export send_history_now = ->
   console.log 'sending history now'
   chrome_history_pages <- get_chrome_history_pages()
   history_id = Date.now()
-  <- log_hist {evt: 'history_pages', hid: history_id, data: chrome_history_pages}
+  <- log_hist {evt: 'history_pages', hid: history_id, data: LZString.compressToBase64(JSON.stringify(chrome_history_pages))}
   url_list_full = history_pages_to_url_list(chrome_history_pages)
   url_list_split = split_list_by_length(url_list_full, 100)
   num_parts = url_list_split.length
   <- async.forEachOf url_list_split, (url_list, idx, donecb) ->
     console.log idx
     get_chrome_history_visits url_list, (url_to_visits) ->
-      log_hist {evt: 'history_visits', idx, totalparts: num_parts, hid: history_id, data: url_to_visits}, donecb
+      log_hist {evt: 'history_visits', idx, totalparts: num_parts, hid: history_id, data: LZString.compressToBase64(JSON.stringify(url_to_visits))}, donecb
   console.log 'done sending history'
   localStorage.setItem 'time_history_sent', history_id
 

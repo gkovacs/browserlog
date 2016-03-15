@@ -187,6 +187,15 @@ export computed_fields =
     callback output
   */
 
+  chrome_history_earliest: (callback) ->
+    url_to_visits <- getcomp 'chrome_history_visits'
+    earliest_time = Date.now()
+    for url,visits of url_to_visits
+      for visit in visits
+        {visitTime} = visit
+        earliest_time = Math.min visitTime, earliest_time
+    callback earliest_time
+
   chrome_history_timespent_url: (callback) ->
     url_to_visits <- getcomp 'chrome_history_visits'
     url_and_visit_time = []

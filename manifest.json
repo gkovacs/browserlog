@@ -3,7 +3,7 @@
   "name": "BrowserLog",
   "short_name": "browserlog",
   "description": "Gain insights about your browsing activity and participate in scientific research",
-  "version": "1.0.10",
+  "version": "1.0.12",
   "permissions": [
     "tabs",
     "webNavigation",
@@ -20,6 +20,7 @@
       "bower_components/async/dist/async.min.js",
       "bower_components/js-yaml/dist/js-yaml.min.js",
       "bower_components/randstr/randstr.js",
+      "bower_components/lz-string/libs/lz-string.min.js",
       "prelude.js",
       "minimongo.js",
       "memoize.js",
@@ -62,5 +63,5 @@
       "*://tmi.stanford.edu/*"
     ]
   },
-  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAg4RNAlf6rBpBCM4q22hcJ0LRzwSuo7rqJ3AhcqKNa04+QFJ2uowgQE0p+2NcaiyUAmk7IjDb2QXLshkPzGWGvgmZBnXIXJx65kzc+Km0VGcGpmnA5ZTynA/wSugjERiACX+Gu31CECn45Spzgt7f/R2CoAZNt6OGSeK8cC3C+xUVD9E2+yTT/tavyqSUWSwkCGHlVxipCLh1xHv2Q8Nedzebhu+AID73IGTlGcCG8H+RZw2PRXMu+y458Q2hLajBfAJxeVC1JJC9EflmmWEJGd8igv7+8peZsgIe/LkL4lvkOrh6oXWU37zYqwCgIahHoaewXYvM8yxJsddPdMgwSwIDAQAB"
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA2ss2C4PvQubdqrobJq5Hc1YjTZys0UPx4Fzgc9VyU61niJxNBfHx5EtqyEkF+JFyYu4Zt3/zgpze7+mIGwjvXXMTnJ+evmVtypnyR2V+7Ju5A91xVEgXpQBvwjljwNHbwSvpexjT5sns4RkWn+9o+9pjlFzZxUbyBTzsHJC4RajX1AoULcUNqF55wByNvo1566NWPARB/oEsrDamJN2waY4Jidr2NtukzIxADQ0kJnLV+M64Z3n4KrU4/Sxc4Pj0MbdW44QLqitLIGS8EtS9+0jEwWCOprfW/RAVbWDtt8QmhXIzF90IUHassE0B+t+2s+9dZBsoMD212mEGKogynwIDAQAB"
 }

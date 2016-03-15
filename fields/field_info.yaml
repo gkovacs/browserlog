@@ -145,3 +145,7 @@ real_timespent_url:
 browsing_time_collection_starttime:
   description: Time at which collection of browsing time was started
   type: computed
+
+chrome_history_earliest:
+  description: Earliest time in chrome history
+  type: computed

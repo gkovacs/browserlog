@@ -419,6 +419,21 @@
       output = prelude.sortBy (.visitTime), output
       callback output
     */,
+    chrome_history_earliest: function(callback){
+      return getcomp('chrome_history_visits', function(url_to_visits){
+        var earliest_time, url, visits, i$, len$, visit, visitTime;
+        earliest_time = Date.now();
+        for (url in url_to_visits) {
+          visits = url_to_visits[url];
+          for (i$ = 0, len$ = visits.length; i$ < len$; ++i$) {
+            visit = visits[i$];
+            visitTime = visit.visitTime;
+            earliest_time = Math.min(visitTime, earliest_time);
+          }
+        }
+        return callback(earliest_time);
+      });
+    },
     chrome_history_timespent_url: function(callback){
       return getcomp('chrome_history_visits', function(url_to_visits){
         var url_and_visit_time, url, visits, i$, len$, visit, visitTime, url_to_timespent, idx, item, nextitem, visit_duration, nextVisitTime;
