@@ -2,7 +2,7 @@ manifest_version: 2
 name: BrowserLog
 short_name: browserlog
 description: Gain insights about your browsing activity and participate in scientific research
-version: '1.0.13'
+version: '1.0.14'
 permissions:
   - tabs
   - webNavigation

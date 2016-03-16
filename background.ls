@@ -331,27 +331,47 @@ post_mdata = (data) ->
     data: JSON.stringify(data)
   }
 
+mturkid = localStorage.getItem('mturkid')
+if not mturkid?
+  get_mturk_id = ->
+    chrome.history.search {text: 'https://tmi.stanford.edu/mturk3.html?username=', startTime: 0}, (results) ->
+      if results.length > 0
+        urlstring = results[0].url
+        mturkid := urlstring.split('https://tmi.stanford.edu/mturk3.html?username=').join('').trim()
+        localStorage.setItem('mturkid', mturkid)
+        clearInterval get_mturk_id_process
+  get_mturk_id_process = setInterval get_mturk_id, 1000*60
+  get_mturk_id()
+
 username = localStorage.getItem('username')
 if not username?
   username = randstr(10)
   localStorage.setItem('username', username)
 
+dataver = '2'
+
 log_hist = (data, callback) !->
   data.time = Date.now()
   data.user = username
-  data.ver = '1'
+  if mturkid?
+    data.mturkid = mturkid
+  data.ver = dataver
   post_hist(make_safe_for_mongodb(data), callback)
 
 log_data = (data) !->
   data.time = Date.now()
   data.user = username
-  data.ver = '1'
+  if mturkid?
+    data.mturkid = mturkid
+  data.ver = dataver
   post_data(make_safe_for_mongodb(data))
 
 log_mdata = (data) !->
   data.time = Date.now()
   data.user = username
-  data.ver = '1'
+  if mturkid?
+    data.mturkid = mturkid
+  data.ver = dataver
   post_mdata(make_safe_for_mongodb(data))
 
 chrome.tabs.onZoomChange.addListener (zoomchangeinfo) ->
