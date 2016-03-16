@@ -556,6 +556,9 @@
         }
         return callback(earliest_time);
       });
+    },
+    extension_username: function(callback){
+      return callback(localStorage.getItem('username'));
     }
   };
 }).call(this);

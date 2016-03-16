@@ -280,3 +280,6 @@ export computed_fields =
       {timestamp} = item
       earliest_time = Math.min(earliest_time, timestamp)
     callback earliest_time
+
+  extension_username: (callback) ->
+    callback localStorage.getItem('username')

@@ -149,3 +149,7 @@ browsing_time_collection_starttime:
 chrome_history_earliest:
   description: Earliest time in chrome history
   type: computed
+
+extension_username:
+  description: Username within extension
+  type: computed
