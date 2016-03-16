@@ -3,7 +3,7 @@
   "name": "BrowserLog",
   "short_name": "browserlog",
   "description": "Gain insights about your browsing activity and participate in scientific research",
-  "version": "1.0.12",
+  "version": "1.0.13",
   "permissions": [
     "tabs",
     "webNavigation",
@@ -40,6 +40,7 @@
       ],
       "js": [
         "bower_components/sweetalert/dist/sweetalert.min.js",
+        "bower_components/lz-string/libs/lz-string.min.js",
         "content_script.js"
       ],
       "css": [

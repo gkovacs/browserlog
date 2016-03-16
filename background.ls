@@ -50,25 +50,17 @@ load_experiment_for_location = (location, callback) ->
 
 getLocation = (callback) ->
   #sendTab 'getLocation', {}, callback
-  console.log 'calling getTabInfo'
   getTabInfo (tabinfo) ->
-    console.log 'getTabInfo results'
-    console.log tabinfo
-    console.log tabinfo.url
     callback tabinfo.url
 
 getTabInfo = (callback) ->
   chrome.tabs.query {active: true, lastFocusedWindow: true}, (tabs) ->
-    console.log 'getTabInfo results'
-    console.log tabs
     if tabs.length == 0
       return
     chrome.tabs.get tabs[0].id, callback
 
 sendTab = (type, data, callback) ->
   chrome.tabs.query {active: true, lastFocusedWindow: true}, (tabs) ->
-    console.log 'sendTab results'
-    console.log tabs
     if tabs.length == 0
       return
     chrome.tabs.sendMessage tabs[0].id, {type, data}, {}, callback
@@ -102,8 +94,6 @@ message_handlers = {
     getlist name, callback
   'getLocation': (data, callback) ->
     getLocation (location) ->
-      console.log 'getLocation background page:'
-      console.log location
       callback location
   'load_experiment': (data, callback) ->
     {experiment_name} = data
@@ -125,8 +115,6 @@ ext_message_handlers = {
       if not accepted
         return
       getfields info.fieldnames, (results) ->
-        console.log 'getfields result:'
-        console.log results
         callback results
   'get_field_descriptions': (namelist, callback) ->
     field_info <- get_field_info()
@@ -161,10 +149,6 @@ chrome.tabs.onUpdated.addListener (tabId, changeInfo, tab) ->
 */
 
 chrome.runtime.onMessageExternal.addListener (request, sender, sendResponse) ->
-  console.log 'onMessageExternal'
-  console.log request
-  console.log 'sender for onMessageExternal is:'
-  console.log sender
   {type, data} = request
   message_handler = ext_message_handlers[type]
   if type == 'requestfields'
@@ -186,26 +170,18 @@ chrome.runtime.onMessageExternal.addListener (request, sender, sendResponse) ->
     return
   #tabId = sender.tab.id
   message_handler data, (response) ~>
-    console.log 'response is:'
-    console.log response
     response_string = JSON.stringify(response)
-    console.log 'turned into response_string:'
-    console.log response_string
     if sendResponse?
       sendResponse response
   return true # async response
 
 chrome.runtime.onMessage.addListener (request, sender, sendResponse) ->
   {type, data} = request
-  console.log type
-  console.log data
   message_handler = message_handlers[type]
   if not message_handler?
     return
   # tabId = sender.tab.id
   message_handler data, (response) ->
-    console.log 'message handler response:'
-    console.log response
     #response_data = {response}
     #console.log response_data
     # chrome bug - doesn't seem to actually send the response back....
@@ -339,7 +315,6 @@ post_hist = (data, callback) ->
 
 post_data = (data) ->
   # some post request occurs here
-  console.log data
   $.ajax {
     type: 'POST'
     url: post_log_url

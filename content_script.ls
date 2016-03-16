@@ -147,7 +147,7 @@ send_stored_events = !->
     videos: get_all_video_tags()
     iframes: get_all_iframes()
   } <<< stored_events
-  sendBackground 'send_stored_events', output
+  sendBackground 'send_stored_events', {data: LZString.compressToBase64(JSON.stringify(output))}
 
 setInterval !->
   if have_new_events()

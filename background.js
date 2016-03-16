@@ -74,11 +74,7 @@
     });
   };
   getLocation = function(callback){
-    console.log('calling getTabInfo');
     return getTabInfo(function(tabinfo){
-      console.log('getTabInfo results');
-      console.log(tabinfo);
-      console.log(tabinfo.url);
       return callback(tabinfo.url);
     });
   };
@@ -87,8 +83,6 @@
       active: true,
       lastFocusedWindow: true
     }, function(tabs){
-      console.log('getTabInfo results');
-      console.log(tabs);
       if (tabs.length === 0) {
         return;
       }
@@ -100,8 +94,6 @@
       active: true,
       lastFocusedWindow: true
     }, function(tabs){
-      console.log('sendTab results');
-      console.log(tabs);
       if (tabs.length === 0) {
         return;
       }
@@ -157,8 +149,6 @@
     },
     'getLocation': function(data, callback){
       return getLocation(function(location){
-        console.log('getLocation background page:');
-        console.log(location);
         return callback(location);
       });
     },
@@ -188,8 +178,6 @@
           return;
         }
         return getfields(info.fieldnames, function(results){
-          console.log('getfields result:');
-          console.log(results);
           return callback(results);
         });
       });
@@ -243,10 +231,6 @@
   */
   chrome.runtime.onMessageExternal.addListener(function(request, sender, sendResponse){
     var type, data, message_handler, whitelist, i$, len$, whitelisted_url, this$ = this;
-    console.log('onMessageExternal');
-    console.log(request);
-    console.log('sender for onMessageExternal is:');
-    console.log(sender);
     type = request.type, data = request.data;
     message_handler = ext_message_handlers[type];
     if (type === 'requestfields') {
@@ -264,11 +248,7 @@
     }
     message_handler(data, function(response){
       var response_string;
-      console.log('response is:');
-      console.log(response);
       response_string = JSON.stringify(response);
-      console.log('turned into response_string:');
-      console.log(response_string);
       if (sendResponse != null) {
         return sendResponse(response);
       }
@@ -278,15 +258,11 @@
   chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
     var type, data, message_handler;
     type = request.type, data = request.data;
-    console.log(type);
-    console.log(data);
     message_handler = message_handlers[type];
     if (message_handler == null) {
       return;
     }
     message_handler(data, function(response){
-      console.log('message handler response:');
-      console.log(response);
       if (sendResponse != null) {
         return sendResponse(response);
       }
@@ -426,7 +402,6 @@
     });
   };
   post_data = function(data){
-    console.log(data);
     return $.ajax({
       type: 'POST',
       url: post_log_url,
