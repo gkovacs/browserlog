@@ -705,7 +705,8 @@
           });
         }, function(){
           console.log('done sending history');
-          return localStorage.setItem('time_history_sent', history_id);
+          localStorage.setItem('time_history_sent', history_id);
+          return time_history_sent = history_id;
         });
       });
     });

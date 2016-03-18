@@ -520,6 +520,7 @@ export send_history_now = ->
       log_hist {evt: 'history_visits', idx, totalparts: num_parts, hid: history_id, data: LZString.compressToBase64(JSON.stringify(url_to_visits))}, donecb
   console.log 'done sending history'
   localStorage.setItem 'time_history_sent', history_id
+  time_history_sent := history_id
 
 export send_history_if_needed = ->
   if Date.now() > time_history_sent + 24*3600*1000 # a day since last history sent
