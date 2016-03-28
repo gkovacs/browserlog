@@ -465,6 +465,9 @@ setInterval ->
 time_history_sent = localStorage.getItem('time_history_sent')
 if not time_history_sent?
   time_history_sent = 0
+time_history_sent = parseInt(time_history_sent)
+if not isFinite(time_history_sent)
+  time_history_sent = 0
 
 get_chrome_history_pages = (callback) ->
   results <- chrome.history.search {text: '', startTime: 0, maxResults: 2**31-1}

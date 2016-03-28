@@ -617,6 +617,10 @@
   if (time_history_sent == null) {
     time_history_sent = 0;
   }
+  time_history_sent = parseInt(time_history_sent);
+  if (!isFinite(time_history_sent)) {
+    time_history_sent = 0;
+  }
   get_chrome_history_pages = function(callback){
     return chrome.history.search({
       text: '',
